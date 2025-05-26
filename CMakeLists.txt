@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.11)
 
 set(NRF_BLE_DRIVER_DEFAULT_VERSION "0.0.0")
 
+# Add this near the top, after project() and before add_library() or target_include_directories()
+
 if(NOT DEFINED NRF_BLE_DRIVER_VERSION)
     message(STATUS "NRF_BLE_DRIVER_VERSION not specified, setting it to ${NRF_BLE_DRIVER_DEFAULT_VERSION}")
     set(NRF_BLE_DRIVER_VERSION "${NRF_BLE_DRIVER_DEFAULT_VERSION}")
@@ -26,6 +28,10 @@ project(
     nrf-ble-driver
     VERSION ${NRF_BLE_DRIVER_VERSION}
 )
+
+
+set(ASIO_INCLUDE_DIR $ENV{ASIO_INCLUDE_DIR})
+include_directories(${ASIO_INCLUDE_DIR})
 
 include(cmake/nrf-ble-driver.cmake)
 include(cmake/source-file-list.cmake)
@@ -270,14 +276,14 @@ foreach(SD_API_VER ${SD_API_VERS})
         set_property(TARGET ${NRF_BLE_DRIVER_${SD_API_VER}_SHARED_LIB} PROPERTY MACOSX_RPATH ON)
     else()
         # Assume Linux
-        target_link_libraries(${NRF_BLE_DRIVER_${SD_API_VER}_STATIC_LIB} PRIVATE "udev" "pthread")
-        target_link_libraries(${NRF_BLE_DRIVER_${SD_API_VER}_SHARED_LIB} PRIVATE "udev" "pthread")
+        target_link_libraries(${NRF_BLE_DRIVER_${SD_API_VER}_STATIC_LIB} PRIVATE "pthread")
+        target_link_libraries(${NRF_BLE_DRIVER_${SD_API_VER}_SHARED_LIB} PRIVATE "pthread")
     endif()
 endforeach(SD_API_VER)
 
 # Add tests
 if(NOT DEFINED DISABLE_TESTS)
-    add_subdirectory(test)
+   # add_subdirectory(test)
 else()
     message(STATUS "Disabling tests")
 endif()

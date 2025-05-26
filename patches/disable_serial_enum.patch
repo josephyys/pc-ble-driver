@@ -1,0 +1,33 @@
+diff --git a/src/common/platform/linux/serial_port_enum.cpp b/src/common/platform/linux/serial_port_enum.cpp
+index abcdefg..1234567 100644
+--- a/src/common/platform/linux/serial_port_enum.cpp
++++ b/src/common/platform/linux/serial_port_enum.cpp
+@@ -35,7 +35,6 @@
+ 
+ #include <vector>
+ #include <string>
+-#include <libudev.h>
+ #include <boost/format.hpp>
+ 
+ #include "serial_port_enum.h"
+@@ -51,71 +50,14 @@ typedef struct SerialPortDesc
+ 
+ std::list<SerialPortDesc> EnumSerialPorts()
+ {
+-    // Implementation using libudev
+-    
+-    /* ... original code removed ... */
+-
+     std::list<SerialPortDesc> serialPortDescList;
+     
+-    /* Return hard-coded port for NUC980 embedded system */
++    /* Hard-coded port for NUC980 embedded system */
+     SerialPortDesc serialPortDesc;
+-    serialPortDesc.portName = "/dev/ttyUSB0";  // Adjust this to match your Nordic dongle port
++    serialPortDesc.portName = "/dev/ttyUSB0";  
+     serialPortDesc.manufacturer = "Nordic";
+     serialPortDesc.serialNumber = "EMBEDDED";
+     serialPortDescList.push_back(serialPortDesc);
+     
+     return serialPortDescList;
+ }
